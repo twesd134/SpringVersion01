@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE tiles-definitions PUBLIC
+"-//Apache Software Foundation//DTD Tiles Configuration 2.0//EN"
+"http://tiles.apache.org/dtds/tiles-config_2_0.dtd">
+<tiles-definitions>
+
+			  <!--공통레이아웃의 뷰이름지정  -->          <!-- 전체 레이아웃을 정하는 JSP위치 지정 -->
+   <definition name="baseLayout"  template="/WEB-INF/views/common/layout.jsp">
+      <put-attribute name="title" value="" />
+      <put-attribute name="header" value="/WEB-INF/views/common/header.jsp" />
+      <put-attribute name="side" value="/WEB-INF/views/common/side.jsp" />
+      <put-attribute name="body" value="" />
+      <put-attribute name="footer" value="/WEB-INF/views/common/footer.jsp" />
+   </definition>
+				<!-- 메인 화면의 뷰이름을 지정 --> 
+   <definition name="main" extends="baseLayout"><!-- 기본적인 레이아웃은 baseLayout을 상속받습니다. -->
+      <put-attribute name="title" value="메인페이지" />
+      <put-attribute name="body" value="/WEB-INF/views/main.jsp" />
+   </definition>				<!-- 레이아웃의 본문에 표시할 jsp를 지정 -->
+
+					<!-- /member/listMember 이런식으로 컨트롤러에서 반환되는 뷰이름을 지정합니다. -->  
+   <definition name="/member/listMembers" extends="baseLayout"><!--baseLayout 기본 레이아웃을 상속받습니다. -->
+      <put-attribute name="title" value="회원목록창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/listMembers.jsp" />
+   </definition>
+   
+
+    
+   <definition name="/member/loginForm" extends="baseLayout">
+      <put-attribute name="title" value="로그인창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/loginForm.jsp" />
+   </definition>
+      
+
+   <definition name="/member/memberForm" extends="baseLayout">
+      <put-attribute name="title" value="회원등록창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/memberForm.jsp" />
+   </definition>
+   
+   <definition name="/member/modMemberForm" extends="baseLayout">
+      <put-attribute name="title" value="회원수정창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/modMemberForm.jsp" />
+   </definition>
+   
+	
+	
+   <definition name="/member/viewDetail" extends="baseLayout">
+      <put-attribute name="title" value="회원상세창" />
+      <put-attribute name="body" value="/WEB-INF/views/member/viewDetail.jsp" />
+   </definition> 
+   
+   
+</tiles-definitions>

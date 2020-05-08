@@ -1,0 +1,159 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+      PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+   "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="mapper.board">
+<resultMap id="articlesResult" type="articleVO">
+    <result property="level" column="level" />
+    <result property="articleNO" column="articleNO" />
+    <result property="parentNO" column="parentNO" />
+    <result property="title" column="title" />
+    <result property="content" column="content" />
+    <result property="writeDate" column="writeDate" />
+    <result property="imageFileName" column="imageFileName" />
+  </resultMap> 
+  
+  <resultMap id="imgResult" type="imageVO">
+	  <result property="imageFileNO" column="imageFileNO" />
+	  <result property="articleNO" column="articleNO" />
+	  <result property="imageFileName" column="imageFileName" />
+ </resultMap>
+
+  <select id="selectAllArticlesList" resultMap="articlesResult"   >
+    <![CDATA[
+      SELECT level, articleNO, parentNO, title, content, writeDate, imageFileName, id
+      from t_board
+      START WITH  parentNO=0
+      
+      CONNECT BY PRIOR articleNO=parentNO 
+      ORDER SIBLINGS BY articleNO DESC		
+    ]]>
+  </select>
+  	
+  	
+  <!-- 
+        START WITH  parentNO=0
+      ->계층형 구조에서 최상위 계층의 로우(row)를 식별하는 조건을 명시함
+      ->parentNO가 0,즉 부모글부터 시작해 계층형 구조를 만든다는 의미
+      CONNECT BY PRIOR articleNO=parentNO 
+      ->계층 구조가 어떤식으로 연결되는지를 기술함
+      ->parentNO에 부모글 번호가 있으므로 이를 표현하려면 CONNECT BY PRIOR articleNO=parentNO로 기술해야함
+      
+      ORDER SIBLINGS BY articleNO DESC		
+      
+      ->계층 구조로 조회된 정보를 다시 articleNO를 이용해 내림차순으로 정렬하여 최종 출력
+  
+   -->
+  
+	<!--단일이미지 추가  -->
+	 
+
+    <insert id="insertNewArticle"  parameterType="java.util.Map">
+    <![CDATA[
+      insert into t_board(articleNO, id, title, content, imageFileName)
+      values(#{articleNO}, #{id}, #{title}, #{content}, null)
+    ]]>      
+  </insert>
+
+	
+    <insert id="addreply"  parameterType="java.util.Map">
+    <![CDATA[
+      insert into t_board(articleNO, id, title, content, imageFileName)
+      values(#{articleNO}, #{id}, #{title}, #{content}, null)
+    ]]>      
+  </insert>
+
+
+  <select id="selectNewArticleNO" resultType="int"  >
+		<![CDATA[
+			select nvl(max(articleNO), 0) +1 from t_board	
+			
+		]]>
+		<!-- 추가하는 새글에 대한 정보를 가져온다. -->
+	</select>
+
+
+<!--  
+	새글을 얻기위한 쿼리문
+	
+NVL 존재하지 않는 데이터 0으로 출력하기
+
+
+혼자 프로젝트를 하다가 데이터가 존재하지 않을 경우 0
+
+존재할 경우 그 값에 1을 더한값을 입력하기	 
+
+-->
+	
+	
+  <select id="selectArticle" resultType="articleVO"   parameterType="int">
+    <![CDATA[
+      SELECT * from t_board
+      where articleNO = #{articleNO}		
+    ]]>
+  </select>
+  
+  <update id="updateArticle"  parameterType="java.util.Map">
+  								<!-- Map으로 글정보를 가져옵니다. -->
+			update t_board
+			set title=#{title},	 
+			content=#{content}
+			 <if test="imageFileName!='' and imageFileName!=null">
+			  , imageFileName=#{imageFileName}
+			</if>
+			<!-- 이미지를 수정한 경우에만 이미지파일을 가져옵니다. -->
+			where articleNO=#{articleNO}
+	</update>
+	
+	 <update id="updateNO"  parameterType="java.util.Map">
+		
+		update t_board set title=#{title}
+		where articleNO>#{articleNO}
+	 
+
+	</update>
+	<delete id="deleteArticle"  parameterType="int">
+    <![CDATA[
+      delete from t_board
+      where articleNO in (
+         SELECT articleNO FROM  t_board
+         START WITH articleNO = #{articleNO}
+         CONNECT BY PRIOR  articleNO = parentNO )
+    ]]>      
+  </delete>
+
+ <!--다중 이미지 추가 SQL문 -->   
+  <!--
+    <insert id="insertNewArticle"  parameterType="java.util.Map">
+    <![CDATA[
+      insert into t_board(articleNO, id, title, content, imageFileName)
+      values(#{articleNO}, #{id}, #{title}, #{content}, null)
+    ]]>      
+  </insert>
+
+ 
+   <insert id="insertNewImage"  parameterType="java.util.Map">
+    <foreach item="item"  collection="list"   open="INSERT ALL" 
+                  separator=" " close="SELECT * FROM DUAL" >
+      INTO t_imageFile(imageFileNO, imageFileName, articleNO, regDate)
+      VALUES (#{item.imageFileNO}, #{item.imageFileName}, #{item.articleNO}, sysdate)
+    </foreach>
+  </insert>
+ -->
+ 
+  <select id="selectNewImageFileNO" resultType="int"  >
+    <![CDATA[
+      SELECT  nvl(max(imageFileNO),0) from t_imageFile		
+    ]]>
+  </select>
+	
+
+  <select  id="selectImageFileList" resultMap="imgResult" parameterType="int">
+    <![CDATA[
+      SELECT * from t_imageFile
+      where articleNO=#{articleNO}	
+    ]]>
+  </select> 
+  
+</mapper>
