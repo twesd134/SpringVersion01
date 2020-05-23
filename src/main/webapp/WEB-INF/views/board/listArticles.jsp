@@ -67,6 +67,7 @@
 	            <a class='cls1' href="${contextPath}/board/viewArticle.do?articleNO=${article.articleNO}">${article.title }</a>
 	          </c:otherwise>
 	        </c:choose>
+	        
 	  </td>
 	  <td  width="10%">${article.writeDate}</td> 
 	</tr>

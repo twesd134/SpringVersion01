@@ -97,15 +97,11 @@ public class BoardDAOImpl implements BoardDAO {
 	@Override
 	public int addReply(Map articleMap) throws DataAccessException {
 		int articleNO = selectNewArticleNO();
-//		int update=updateNO(articleMap);
-		int parentNO=selectNewArticleNO();
-		articleMap.put("articleNO", articleNO);
-//		articleMap.put("update", update);
-		articleMap.put("parentNO",articleNO);
+		articleMap.put("articleNO",articleNO);
 		sqlSession.insert("mapper.board.addreply",articleMap);
 		return articleNO;
 		
-	}//´äº¯Äõ¸®
+	}
 
 	
 	
@@ -114,5 +110,5 @@ public class BoardDAOImpl implements BoardDAO {
 		// TODO Auto-generated method stub
 		return sqlSession.update("mapper.board.updateNO");
 	}
-	//´äº¯Äõ¸®
+	
 }

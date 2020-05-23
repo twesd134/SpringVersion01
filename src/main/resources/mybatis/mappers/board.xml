@@ -51,16 +51,16 @@
 
     <insert id="insertNewArticle"  parameterType="java.util.Map">
     <![CDATA[
-      insert into t_board(articleNO, id, title, content, imageFileName)
-      values(#{articleNO}, #{id}, #{title}, #{content}, null)
+      insert into t_board(articleNO,parentNO,id, title, content, imageFileName)
+      values(#{articleNO},#{parentNO},#{id}, #{title}, #{content}, null)
     ]]>      
   </insert>
 
 	
     <insert id="addreply"  parameterType="java.util.Map">
     <![CDATA[
-      insert into t_board(articleNO, id, title, content, imageFileName)
-      values(#{articleNO}, #{id}, #{title}, #{content}, null)
+      insert into t_board(articleNO,parentNO,id, title, content, imageFileName)
+      values(#{articleNO},#{parentNO},#{id}, #{title}, #{content}, null)
     ]]>      
   </insert>
 
@@ -70,7 +70,7 @@
 			select nvl(max(articleNO), 0) +1 from t_board	
 			
 		]]>
-		<!-- 추가하는 새글에 대한 정보를 가져온다. -->
+		<!-- 추가하는 새답글에 대한 정보를 가져온다. -->
 	</select>
 
 

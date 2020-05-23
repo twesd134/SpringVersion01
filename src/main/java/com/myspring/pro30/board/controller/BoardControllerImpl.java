@@ -38,6 +38,7 @@ import com.myspring.pro30.member.vo.MemberVO;
 @Controller("boardController")
 public class BoardControllerImpl  implements BoardController{
 	private static final String ARTICLE_IMAGE_REPO = "C:\\board\\article_image";
+	
 	@Autowired
 	private BoardService boardService;
 	@Autowired
@@ -54,7 +55,7 @@ public class BoardControllerImpl  implements BoardController{
 		mav.addObject("articlesList", articlesList);
 		//조회된 글 정보를 바인딩한 후 JSP로 전달합니다.
 		return mav;
-	
+		
 	}
 
 	@Override
@@ -76,7 +77,7 @@ public class BoardControllerImpl  implements BoardController{
 		HttpSession session = multipartRequest.getSession();
 		MemberVO memberVO = (MemberVO) session.getAttribute("member");
 		String id = memberVO.getId();
-		articleMap.put("parentNO",0);
+		articleMap.put("parentNO",0); //부모값을 0으로 지정
 		articleMap.put("id", id);
 		articleMap.put("imageFileName", imageFileName);
 		
@@ -90,8 +91,11 @@ public class BoardControllerImpl  implements BoardController{
 				File srcFile = new 
 				File(ARTICLE_IMAGE_REPO+"\\"+"temp"+"\\"+imageFileName);
 				File destDir = new File(ARTICLE_IMAGE_REPO+"\\"+articleNO);
-				FileUtils.moveFileToDirectory(srcFile, destDir,true);
+				FileUtils.moveFileToDirectory(srcFile, destDir,true); //파일전송함수.
 			}
+			
+			
+			
 	
 			message = "<script>";
 			message += " alert('새글을 추가했습니다.');";
@@ -120,30 +124,30 @@ public class BoardControllerImpl  implements BoardController{
 		multipartRequest.setCharacterEncoding("utf-8");
 		
 		Map<String,Object> articleMap = new HashMap<String, Object>();
-			//그
-		
+			
+
 		Enumeration enu=multipartRequest.getParameterNames();
 		while(enu.hasMoreElements()){
 			String name=(String)enu.nextElement();
 			String value=multipartRequest.getParameter(name);
 			articleMap.put(name,value);
 		}
-		
-		String imageFileName= upload(multipartRequest);
+
+
+	    String imageFileName= upload(multipartRequest);
 		HttpSession session = multipartRequest.getSession();
 		//parent에 저장한 NO를 들고오는것이 새글쓰기랑 차이점이다.
-		session.removeAttribute("parentNO");
 		MemberVO memberVO = (MemberVO) session.getAttribute("member");
-		ArticleVO article=(ArticleVO)session.getAttribute("articleNO");
-		int parentNO=(Integer)article.getParentNO();
+		int parentNO=(Integer) session.getAttribute("parentNO");
+		session.removeAttribute("parentNO");
 		String id = memberVO.getId();
-		
-		
-		
+
+
+
 		articleMap.put("parentNO",parentNO);
 		articleMap.put("id", id);
 		articleMap.put("imageFileName", imageFileName);
-		
+
 		String message;
 		ResponseEntity resEnt=null;
 		HttpHeaders responseHeaders = new HttpHeaders();
@@ -191,7 +195,7 @@ public class BoardControllerImpl  implements BoardController{
 	
 
 	
-  //한 개 이미지 수정 기능
+  //수정 기능
   @RequestMapping(value="/board/modArticle.do" ,method = RequestMethod.POST)
   @ResponseBody
   public ResponseEntity modArticle(MultipartHttpServletRequest multipartRequest,  
@@ -244,6 +248,8 @@ public class BoardControllerImpl  implements BoardController{
     }
     return resEnt;
   }
+  
+  
   
   @Override
   @RequestMapping(value="/board/removeArticle.do" ,method = RequestMethod.POST)
@@ -374,7 +380,6 @@ public class BoardControllerImpl  implements BoardController{
 		int parentNO=Integer.parseInt(request.getParameter("parentNO"));
 
 		HttpSession session = request.getSession();
-		session=request.getSession();
 		session.setAttribute("parentNO",parentNO);
 		
 		return mav;

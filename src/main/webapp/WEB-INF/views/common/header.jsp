@@ -19,11 +19,11 @@
   <tr>
      <td>
 		<a href="${contextPath}/main.do">
-			<img src="${contextPath}/resources/image/duke_swing.gif"  />
+			<img src="${contextPath}/resources/image/Gom.png"  />
 		</a>
      </td>
      <td>
-       <h1><font size=10>회원관리 홈페이지</font></h1>
+       <h1><font size=10> MVC 활용 프로젝트</font></h1>
      </td>
      
      <td>
@@ -44,3 +44,5 @@
 
 </body>
 </html>
+
+

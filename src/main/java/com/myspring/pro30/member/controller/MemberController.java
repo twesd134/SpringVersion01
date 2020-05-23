@@ -14,10 +14,13 @@ import com.myspring.pro30.member.vo.MemberVO;
 public interface MemberController {
 	public ModelAndView listMembers(HttpServletRequest request, HttpServletResponse response) throws Exception;
 	public ModelAndView addMember(@ModelAttribute("info") MemberVO memberVO,HttpServletRequest request, HttpServletResponse response) throws Exception;
+	// @ModelAttribute는 JSP에서 Form 태그를 통해 전달받은 파라미터들을 객체로 바인딩 시키는 경우에 사용할 수 있다.
 	public ModelAndView removeMember(@RequestParam("id") String id, HttpServletRequest request, HttpServletResponse response) throws Exception;
 	public ModelAndView login(@ModelAttribute("member") MemberVO member,
                               RedirectAttributes rAttr,
                               HttpServletRequest request, HttpServletResponse response) throws Exception;
 	public ModelAndView logout(HttpServletRequest request, HttpServletResponse response) throws Exception;
 	public ModelAndView modMember(@ModelAttribute("info") MemberVO member, HttpServletRequest request, HttpServletResponse response) throws Exception;
+	// @ModelAttribute는 JSP에서 Form 태그를 통해 전달받은 파라미터들을 객체로 바인딩 시키는 경우에 사용할 수 있다.
+
 }
