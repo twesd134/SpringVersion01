@@ -46,22 +46,22 @@
 </head>
 <body>
 <h1 style="text-align:center">글쓰기</h1>
-  <form name="articleForm" method="post"   action="${contextPath}/board/addNewArticle.do"   enctype="multipart/form-data">
+  <form name="articleForm" method="post" action="${contextPath}/board/addNewArticle.do"   enctype="multipart/form-data">
     <table border="0" align="center">
       <tr>
-			 <td width=150  align="center" bgcolor=bluesky> 작성자</td>
+			 <td width=150  align="center" bgcolor=skyblue> 작성자</td>
 					<td colspan=2  align="left"><input type="text" size="80" maxlength="100"  value="${member.name }" readonly/> </td>
 			</tr>
 	     <tr>
-			  <td width=150  align="center" bgcolor=bluesky>글제목: </td>
+			  <td width=150  align="center" bgcolor=skyblue>글제목: </td>
 			   <td colspan="2"><input type="text" size="80"  maxlength="500" name="title" /></td>
 		 </tr>
 	 		<tr>
-			<td width=150  align="center" bgcolor=bluesky><br>글내용: </td>
+			<td width=150  align="center" bgcolor=skyblue><br>글내용: </td>
 				<td colspan=2><textarea name="content" rows="30" cols="70" maxlength="4000"></textarea> </td>
      </tr>
      <tr>
-			<td width=150  align="center" bgcolor=bluesky>이미지파일 첨부:  </td>
+			<td width=150  align="center" bgcolor=skyblue>이미지파일 첨부:  </td>
 			  <td> <input type="file" name="imageFileName"  onchange="readURL(this);" /></td>
 			  <td><img  id="preview" src="#"   width=200 height=200/></td>
 			  
